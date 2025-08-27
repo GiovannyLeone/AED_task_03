@@ -26,6 +26,32 @@ public class Fumante {
 
     private String cigarroPorDia;
     private String tempo;
+    private int tempoPerdidoCigarro;
+
+
+    public void setCigarroPorDia(String CigarroPorDia) {
+        this.cigarroPorDia = CigarroPorDia;
+    }
+
+    public String getCigarroPorDia() {
+        return this.cigarroPorDia;
+    }
+
+    public void setTempo(String Tempo) {
+        this.tempo = Tempo;
+    }
+
+    public String getTempo() {
+        return this.tempo;
+    }
+
+    public void setTempoPerdidoCigarro() {
+        this.tempoPerdidoCigarro = 600; // 10min em segundos é 600
+    }
+
+    public int getTempoPerdidoCigarro() {
+        return this.tempoPerdidoCigarro;
+    }
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -33,49 +59,54 @@ public class Fumante {
         // Criando um objeto da classe Fumante
         Fumante fumante = new Fumante();
 
-        System.out.print("Quantos cigarros você muda por dia?:  ");
-        fumante.cigarroPorDia = scanner.nextLine();
+        System.out.print("Quantos cigarros você fuma por dia?:  ");
+        fumante.setCigarroPorDia(scanner.nextLine());
 
         System.out.print("Quantos anos você fuma?:  ");
-        fumante.tempo = scanner.nextLine();
+        fumante.setTempo(scanner.nextLine());
 
-        String result = tempoVidaPerdido(fumante.cigarroPorDia, fumante.tempo);
+        String result = fumante.tempoVidaPerdido();
 
         System.out.println(result);
 
 
     }
 
-    public static String tempoVidaPerdido(String _pCigarro, String _pTempo) {
+    public String tempoVidaPerdido() {
+
+        int resultFumar = this.fumar();
+
+        int totalTempoPerdidoDias = resultFumar / 86400; // dividindo o valor por 86400, faz o resultado aparecer em dias
+        int totalTempoPerdidoAnos = totalTempoPerdidoDias / 365; // dividindo os meses por 365, faz o resultado aparecer em anos
+
+        if (totalTempoPerdidoAnos < 1) { // nessa linha eu verifico se o valor é menor que um ano
+            // se o valor for menor que 1 ano retorna o resultado em meses
+            return "Você perdeu " + totalTempoPerdidoDias + " dias de vida!";
+        } else {
+            // caso contrário retorna em anos
+            return "Você perdeu " + totalTempoPerdidoAnos + " anos de vida!";
+        }
+
+    }
+
+    public int fumar() {
         /*
          * Premissa: 1 Cigarro fumado = -10 mintutos de vida
          * 10 minutos = 600 segundos
          * 1 ano = 31556952 segundos
          * */
 
-        int pCigarro = Integer.parseInt(_pCigarro);
-        int pTempo = Integer.parseInt(_pTempo);
+        int pCigarro = Integer.parseInt(this.getCigarroPorDia());
+        int pTempo = Integer.parseInt(this.getTempo());
 
-
-        int tempoPerdido1Cigarro = 600; // 10min em segundos
         int diasPorAno = 365;
+
+        this.setTempoPerdidoCigarro();
 
         int totalDias = pTempo * diasPorAno;
         int totalCigarros = pCigarro * totalDias;
-        int totalTempoPerdido = totalCigarros * tempoPerdido1Cigarro;
 
-        int totalTempoPerdidoMeses = totalTempoPerdido / 86400; // dividindo o valor por 86400, faz o resultado aparecer em dias
-        int totalTempoPerdidoAnos = totalTempoPerdidoMeses / 365; // dividindo os meses por 365, faz o resultado aparecer em anos
-
-        if (totalTempoPerdidoAnos < 1) { // nessa linha eu verifico se o valor é menor que um ano
-            // se o valor for menor que 1 ano retorna o resultado em meses
-            return "Você perdeu " + totalTempoPerdidoMeses + " dias de vida!";
-        } else {
-            // caso contrário retorna em anos
-            return "Você perdeu " + totalTempoPerdidoMeses + " anos de vida!";
-        }
-
-
+        return totalCigarros * this.getTempoPerdidoCigarro();
     }
 
 }
