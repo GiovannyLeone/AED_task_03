@@ -39,24 +39,19 @@ public class Fumante {
         System.out.print("Quantos anos você fuma?:  ");
         fumante.tempo = scanner.nextLine();
 
-        int result = tempoVidaPerdido(fumante.cigarroPorDia, fumante.tempo);
+        String result = tempoVidaPerdido(fumante.cigarroPorDia, fumante.tempo);
 
-        int resultAno = result / 365;
+        System.out.println(result);
 
-        if (resultAno < 1){
-            System.out.println("Você perdeu " + result + " dias de vida");
-        } else {
-            System.out.println("Você perdeu " + resultAno + " anos de vida");
-        }
 
     }
 
-    public static int tempoVidaPerdido(String _pCigarro, String _pTempo) {
+    public static String tempoVidaPerdido(String _pCigarro, String _pTempo) {
         /*
-        * Premissa: 1 Cigarro fumado = -10 mintutos de vida
-        * 10 minutos = 600 segundos
-        * 1 ano = 31556952 segundos
-        * */
+         * Premissa: 1 Cigarro fumado = -10 mintutos de vida
+         * 10 minutos = 600 segundos
+         * 1 ano = 31556952 segundos
+         * */
 
         int pCigarro = Integer.parseInt(_pCigarro);
         int pTempo = Integer.parseInt(_pTempo);
@@ -69,8 +64,16 @@ public class Fumante {
         int totalCigarros = pCigarro * totalDias;
         int totalTempoPerdido = totalCigarros * tempoPerdido1Cigarro;
 
+        int totalTempoPerdidoMeses = totalTempoPerdido / 86400; // dividindo o valor por 86400, faz o resultado aparecer em dias
+        int totalTempoPerdidoAnos = totalTempoPerdidoMeses / 365; // dividindo os meses por 365, faz o resultado aparecer em anos
 
-        return totalTempoPerdido / 86400;
+        if (totalTempoPerdidoAnos < 1) { // nessa linha eu verifico se o valor é menor que um ano
+            // se o valor for menor que 1 ano retorna o resultado em meses
+            return "Você perdeu " + totalTempoPerdidoMeses + " dias de vida!";
+        } else {
+            // caso contrário retorna em anos
+            return "Você perdeu " + totalTempoPerdidoMeses + " anos de vida!";
+        }
 
 
     }
